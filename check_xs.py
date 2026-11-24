@@ -141,6 +141,17 @@ def main() -> int:
         if el is None:
             page.screenshot(path="debug.png", full_page=True)
             print(f"Nie znaleziono przycisku rozmiaru {SIZE} – sprawdź debug.png")
+            print("TITLE:", page.title(), "| URL:", page.url)
+            print("BODY:", page.inner_text("body")[:1500].replace("\n", " | "))
+            dump = page.evaluate(
+                """size => [...document.querySelectorAll('*')]
+                    .filter(e => e.children.length === 0 && (e.textContent||'').trim() === size)
+                    .slice(0, 8)
+                    .map(e => (e.parentElement?.parentElement || e.parentElement || e).outerHTML.slice(0, 700))""",
+                SIZE,
+            )
+            for d in dump:
+                print("CAND:", d)
             browser.close()
             return 1
 
