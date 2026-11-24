@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Arket – strażnik rozmiaru</title>
+<style>
+  body { font: 14px system-ui, sans-serif; width: 360px; margin: 16px; color: #222; }
+  h1 { font-size: 16px; margin: 0 0 12px; }
+  label { display: block; margin: 8px 0 2px; font-weight: 600; }
+  input { width: 100%; box-sizing: border-box; padding: 6px; border: 1px solid #bbb; border-radius: 6px; }
+  .row { display: flex; gap: 8px; } .row > div { flex: 1; }
+  button { margin-top: 12px; padding: 8px 10px; border: 0; border-radius: 6px; background: #222; color: #fff; cursor: pointer; }
+  button.sec { background: #e5e5e5; color: #222; }
+  #status { margin-top: 12px; padding: 8px; background: #f4f4f4; border-radius: 6px; white-space: pre-wrap; font-size: 12px; }
+  .switch { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-weight: 600; }
+  .switch input { width: auto; }
+</style>
+</head>
+<body>
+  <h1>Arket – strażnik rozmiaru</h1>
+  <label for="url">Link do produktu</label>
+  <input id="url">
+  <div class="row">
+    <div><label for="size">Rozmiar</label><input id="size"></div>
+    <div><label for="minutes">Co ile minut</label><input id="minutes" type="number" min="1"></div>
+  </div>
+  <label for="token">Telegram bot token</label>
+  <input id="token" type="password">
+  <label for="chatId">Telegram chat ID</label>
+  <input id="chatId">
+  <div class="switch"><input type="checkbox" id="active"><span>Pilnuj automatycznie</span></div>
+  <button id="save">Zapisz</button>
+  <button id="test" class="sec">Test Telegrama</button>
+  <button id="check" class="sec">Sprawdź teraz</button>
+  <div id="status">—</div>
+  <script src="options.js"></script>
+</body>
+</html>

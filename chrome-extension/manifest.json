@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Arket – strażnik rozmiaru",
+  "version": "1.0",
+  "description": "Co 10 minut sprawdza dostępność rozmiaru na stronie Arket i wysyła wiadomość na Telegram.",
+  "permissions": [
+    "alarms",
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.arket.com/*",
+    "https://api.telegram.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "action": {
+    "default_title": "Arket – strażnik rozmiaru"
+  }
+}

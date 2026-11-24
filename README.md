@@ -28,3 +28,10 @@ Od tej chwili harmonogram działa sam.
   Actions → Arket XS watcher → **Enable workflow**.
 - Jeśli Arket zmieni wygląd strony, skrypt zakończy się błędem, a GitHub wyśle Ci maila o nieudanym uruchomieniu.
 - Inny rozmiar lub produkt: zmień `SIZE` w workflow albo dodaj `PRODUCT_URL` w `env`.
+
+## Wersja w Chrome (działa – Arket blokuje serwery, ale nie Twoją przeglądarkę)
+
+Folder `chrome-extension/`: rozszerzenie, które co 10 minut otwiera stronę w zminimalizowanym oknie,
+sprawdza rozmiar i wysyła wiadomość na Telegram. Instalacja: `chrome://extensions` → Tryb dewelopera →
+„Załaduj rozpakowane” → wskaż folder. Kliknij ikonę rozszerzenia, wpisz token i chat ID, zaznacz
+„Pilnuj automatycznie”, Zapisz.
