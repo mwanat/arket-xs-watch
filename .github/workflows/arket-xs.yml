@@ -1,0 +1,63 @@
+name: Arket XS watcher
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # co 10 minut (GitHub potrafi opóźnić start o kilka minut)
+  workflow_dispatch:
+    inputs:
+      test_message:
+        description: "Wyślij tylko wiadomość testową na Telegram"
+        type: boolean
+        default: false
+
+permissions:
+  actions: write     # potrzebne, żeby workflow wyłączył się po znalezieniu rozmiaru
+  contents: read
+
+concurrency:
+  group: arket-xs
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalacja Playwright
+        run: |
+          pip install playwright==1.49.1
+          python -m playwright install --with-deps chromium
+
+      - name: Sprawdź rozmiar
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TEST_MESSAGE: ${{ inputs.test_message && '1' || '0' }}
+          SIZE: XS
+        run: python check_xs.py
+
+      - name: Zrzut ekranu (diagnostyka)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshot
+          path: debug.png
+          if-no-files-found: ignore
+          retention-days: 2
+
+      - name: Wyłącz watcher po znalezieniu rozmiaru
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f result.txt ] && [ "$(cat result.txt)" = "available" ]; then
+            gh workflow disable "Arket XS watcher" --repo "$GITHUB_REPOSITORY"
+            echo "Watcher wyłączony – XS znaleziony."
+          fi
